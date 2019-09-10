@@ -9,18 +9,18 @@ Vagrant.configure("2") do |config|
     vb.cpus = 2
   end
   config.vm.provision "shell", inline: <<-SHELL
-    apt-get update
+    apt update
 
-    apt-get install apt-transport-https ca-certificates curl software-properties-common jq
+    apt install apt-transport-https ca-certificates curl software-properties-common jq -y
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
     add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-    apt-get update
-    apt-get install -y docker-ce
+    apt update
+    apt install -y docker-ce
 
-    apt-get install -y cgdb
-    apt-get install -y cgroup-tools
+    apt install -y cgdb
+    apt install -y cgroup-tools
 
-    apt-get install -y make gcc
+    apt install -y gcc
     git clone git://git.kernel.org/pub/scm/linux/kernel/git/morgan/libcap.git /usr/src/libcap
     (cd /usr/src/libcap && make && make install)
   SHELL
