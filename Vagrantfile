@@ -2,25 +2,24 @@
 # vi: set ft=ruby :
 
 Vagrant.configure("2") do |config|
-  config.vm.box = "swallat/ubuntu-18.04-parallels"
-  config.vm.box_version = "1.0"
-  config.vm.provider "parallels" do |vb|
-    vb.memory = "1024"
-    vb.cpus = 2
+  config.vm.box = "bento/ubuntu-18.04"
+  config.vm.provider "vmware_desktop" do |v|
+    v.vmx["memsize"] = "1024"
+    v.vmx["numvcpus"] = "2"
   end
   config.vm.provision "shell", inline: <<-SHELL
-    apt update
+    apt-get update
 
-    apt install apt-transport-https ca-certificates curl software-properties-common jq -y
+    apt-get install apt-transport-https ca-certificates curl software-properties-common jq -y
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
     add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-    apt update
-    apt install -y docker-ce
+    apt-get update
+    apt-get install -y docker-ce
 
-    apt install -y cgdb
-    apt install -y cgroup-tools
+    apt-get install -y cgdb
+    apt-get install -y cgroup-tools
 
-    apt install -y gcc
+    apt-get install -y make gcc
     git clone git://git.kernel.org/pub/scm/linux/kernel/git/morgan/libcap.git /usr/src/libcap
     (cd /usr/src/libcap && make && make install)
   SHELL
